@@ -61,6 +61,13 @@ grade_school_mul_optim(
     uint32_t const  *b,     /*  in - polynomial */
     uint32_t const   N);    /*  in - number of coefficients in a and b */
 
+void
+grade_school_mul_half_optim(
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N);    /*  in - number of coefficients in a and b */
+
 
 void
 __m256i_grade_school_mul_16(

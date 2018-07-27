@@ -1,5 +1,45 @@
 
 #include "simd_poly.h"
+#define Q
+void grade_school_mul_half_optim(
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N)     /*  in - number of coefficients in a and b */
+{
+    uint32_t i;
+    uint32_t j;
+
+	uint32_t const *ai=a;
+    uint32_t const *bb=b;
+    uint32_t *rr=res1;
+    
+    
+    
+    j=N;
+    for(;j--;)
+    {
+        *rr = (*ai)*(*bb);
+        bb++;
+        rr++;
+    }
+    
+    for(i=1; i<N; i++)
+    {
+        ai++;
+        bb=b;
+        rr=res1+i;
+        j=N-i;
+        for(;j--;)
+        {
+            *rr += (*ai)* (*bb);
+            bb++;
+            rr++;
+        }
+    }
+
+    return;
+}
 
 void grade_school_mul_optim(
     uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
@@ -13,6 +53,8 @@ void grade_school_mul_optim(
 	uint32_t const *ai=a;
     uint32_t const *bb=b;
     uint32_t *rr=res1;
+    
+    
     
     j=N;
     for(;j--;)
@@ -31,10 +73,9 @@ void grade_school_mul_optim(
         j=N;
         for(;j--;)
         {
-            *rr += (*ai)* (*bb);
+            *rr += (*ai)*(*bb)%111111;
             bb++;
             rr++;
-            
         }
     }
     res1[2*N-1] = 0;
