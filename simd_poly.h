@@ -13,7 +13,7 @@
 #include <math.h>       /* sqrt */
 //#include <NTL/ZZ.h>
 #include <immintrin.h>
-#define uint16_t unsigned short
+
 //using namespace std;
 
 void print256_num(__m256i var);
@@ -23,22 +23,22 @@ uint64_t rdtsc();
 
 void
 __mm256i_karatsuba__mm256_toom4(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 
 /* ******************** without avx-2 ************************** */
 
 void
 karatsuba_toom4(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 
 
@@ -49,27 +49,35 @@ karatsuba_toom4(
 
 void
 grade_school_mul(
-    uint16_t        *res1,  /* out - a * b in Z[x], must be length 2N */
-    uint16_t const  *a,     /*  in - polynomial */
-    uint16_t const  *b,     /*  in - polynomial */
-    uint16_t const   N);    /*  in - number of coefficients in a and b */
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N);    /*  in - number of coefficients in a and b */
+
+void
+grade_school_mul_optim(
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N);    /*  in - number of coefficients in a and b */
+
 
 void
 __m256i_grade_school_mul_16(
-    uint16_t        *res1,  /* out - a * b in Z[x], must be length 2N */
-    uint16_t        *buf,   /* buf size >= 32 bytes */
-    uint16_t const  *a,     /*  in - polynomial */
-    uint16_t const  *b,     /*  in - polynomial */
-    uint16_t const   N);    /*  in - number of coefficients in a and b <= 16*/
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t        *buf,   /* buf size >= 32 bytes */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N);    /*  in - number of coefficients in a and b <= 16*/
 
 
 void
 __m256i_grade_school_mul_32(
-    uint16_t        *res1,  /* out - a * b in Z[x], must be length 2N */
-    uint16_t        *buf,   /* buf size >= 64 bytes */
-    uint16_t const  *a,     /*  in - polynomial */
-    uint16_t const  *b,     /*  in - polynomial */
-    uint16_t const   N);    /*  in - number of coefficients in a and b <= 32*/
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t        *buf,   /* buf size >= 64 bytes */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N);    /*  in - number of coefficients in a and b <= 32*/
 
 
 int test_SB_32();
@@ -79,53 +87,69 @@ int test_SB_32();
 
 void
 __mm256i_karatsuba_SB(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 
 
 void
 karatsuba_old(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
+
+void
+karatsuba_old_optim(
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
+void
+karatsuba_old_optim2(
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
+
 
 void
 karatsuba_old16(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 int test_karatsuba();
 
 /* ******************** toom 3 area ************************ */
 
 /*
- * toom3 multiplication with uint16_t coefficients,
+ * toom3 multiplication with uint32_t coefficients,
  * only usable for degree less than 96,
- * uses uint16_t based school book multiplications when
+ * uses uint32_t based school book multiplications when
  * degree drops below 32
  * okay speed
  */
 int
 toom3(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 
 
 /*
- * toom3 multiplication with uint16_t coefficients,
+ * toom3 multiplication with uint32_t coefficients,
  * only usable for degree less than 96,
  * uses vectorized school book multiplications (avx2)
  * when degree drops below 32
@@ -133,11 +157,11 @@ toom3(
  */
 int
 toom3__mm256i_SB(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 
 /*
@@ -149,11 +173,11 @@ toom3__mm256i_SB(
  */
 int
 __mm256i_toom3__mm256i_SB(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 
 int test_toom3();
@@ -162,9 +186,9 @@ int test_toom3();
 /* ******************** toom 4 area ************************ */
 
 /*
- * toom4 multiplication with uint16_t coefficients,
+ * toom4 multiplication with uint32_t coefficients,
  * only usable for degree less than 384,
- * uses uint16_t based school book multiplications when
+ * uses uint32_t based school book multiplications when
  * degree drops below 96
  * available for testing; really slow
  */
@@ -172,14 +196,14 @@ int test_toom3();
 
 int
 toom4_SB(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 /*
- * toom4 multiplication with uint16_t coefficients,
+ * toom4 multiplication with uint32_t coefficients,
  * only usable for degree less than 384,
  * uses toom3 multiplications when
  * degree drops below 96
@@ -188,14 +212,14 @@ toom4_SB(
 
 int
 toom4_toom3(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 /*
- * toom4 multiplication with uint16_t coefficients,
+ * toom4 multiplication with uint32_t coefficients,
  * only usable for degree less than 384,
  * uses __mm256i_toom3 multiplications when
  * degree drops below 96
@@ -203,11 +227,11 @@ toom4_toom3(
  */
 int
 toom4__mm256i_toom3(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 
 /*
@@ -219,11 +243,11 @@ toom4__mm256i_toom3(
  */
 int
 __mm256i_toom4__mm256i_toom3(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n);/*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 int test_toom4();
 #endif /*SIMD_POLY_H_*/

@@ -1,17 +1,57 @@
 
 #include "simd_poly.h"
 
+void grade_school_mul_optim(
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N)     /*  in - number of coefficients in a and b */
+{
+    uint32_t i;
+    uint32_t j;
+
+	uint32_t const *ai=a;
+    uint32_t const *bb=b;
+    uint32_t *rr=res1;
+    
+    j=N;
+    for(;j--;)
+    {
+        *rr = (*ai)*(*bb);
+        bb++;
+        rr++;
+    }
+    
+    for(i=1; i<N; i++)
+    {
+        res1[i+N-1] = 0;
+        ai++;
+        bb=b;
+        rr=res1+i;
+        j=N;
+        for(;j--;)
+        {
+            *rr += (*ai)* (*bb);
+            bb++;
+            rr++;
+            
+        }
+    }
+    res1[2*N-1] = 0;
+
+    return;
+}
 
 
 void
 grade_school_mul(
-    uint16_t        *res1,  /* out - a * b in Z[x], must be length 2N */
-    uint16_t const  *a,     /*  in - polynomial */
-    uint16_t const  *b,     /*  in - polynomial */
-    uint16_t const   N)     /*  in - number of coefficients in a and b */
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N)     /*  in - number of coefficients in a and b */
 {
-    uint16_t i;
-    uint16_t j;
+    uint32_t i;
+    uint32_t j;
 
     for(j=0; j<N; j++)
     {
@@ -32,18 +72,18 @@ grade_school_mul(
 
 void
 __m256i_grade_school_mul_16(
-    uint16_t        *res1,  /* out - a * b in Z[x], must be length 2N */
-    uint16_t        *buf,   /* buf size >= 32 bytes */
-    uint16_t const  *a,     /*  in - polynomial */
-    uint16_t const  *b,     /*  in - polynomial */
-    uint16_t const   N)     /*  in - number of coefficients in a and b <= 16*/
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t        *buf,   /* buf size >= 32 bytes */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N)     /*  in - number of coefficients in a and b <= 16*/
 {
-    uint16_t i;
-    uint16_t j;
-    uint16_t n;
-    uint16_t *buf1;
-    memset(buf, 0, 32*sizeof(uint16_t));
-    memcpy(buf, a, N*sizeof(uint16_t));
+    uint32_t i;
+    uint32_t j;
+    uint32_t n;
+    uint32_t *buf1;
+    memset(buf, 0, 32*sizeof(uint32_t));
+    memcpy(buf, a, N*sizeof(uint32_t));
     buf1 = buf + 16;
     __m256i a256low;
     __m256i a256high;
@@ -60,8 +100,8 @@ __m256i_grade_school_mul_16(
     for (i=1;i<N;i++)
     {
         tmp = _mm256_set1_epi16(b[i]);
-        memcpy(buf+i, a, N*sizeof(uint16_t));       // shifting
-        memset(buf, 0, i*sizeof(uint16_t));
+        memcpy(buf+i, a, N*sizeof(uint32_t));       // shifting
+        memset(buf, 0, i*sizeof(uint32_t));
         a256low = _mm256_loadu_si256((__m256i *)(buf));
         a256high = _mm256_loadu_si256((__m256i *)(buf1));
         r256low =_mm256_add_epi16 (r256low, _mm256_mullo_epi16 (tmp,a256low));
@@ -75,17 +115,17 @@ __m256i_grade_school_mul_16(
 
 void
 __m256i_grade_school_mul_32(
-    uint16_t        *res1,  /* out - a * b in Z[x], must be length 2N */
-    uint16_t        *buf,   /* buf size >= 64 bytes */
-    uint16_t const  *a,     /*  in - polynomial */
-    uint16_t const  *b,     /*  in - polynomial */
-    uint16_t const   N)     /*  in - number of coefficients in a and b <= 32*/
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t        *buf,   /* buf size >= 64 bytes */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N)     /*  in - number of coefficients in a and b <= 32*/
 {
-    uint16_t i;
-    uint16_t j;
-    uint16_t n;
-    uint16_t sizen = N*sizeof(uint16_t);
-    uint16_t *buf1, *buf2, *buf3;
+    uint32_t i;
+    uint32_t j;
+    uint32_t n;
+    uint32_t sizen = N*sizeof(uint32_t);
+    uint32_t *buf1, *buf2, *buf3;
     memset(buf, 0, sizen*2);
     memcpy(buf, a, sizen);
 
@@ -162,18 +202,18 @@ __m256i_grade_school_mul_32(
 
 void
 __m256i_grade_school_mul_32_old(
-    uint16_t        *res1,  /* out - a * b in Z[x], must be length 2N */
-    uint16_t        *buf,   /* buf size >= 64 bytes */
-    uint16_t const  *a,     /*  in - polynomial */
-    uint16_t const  *b,     /*  in - polynomial */
-    uint16_t const   N)     /*  in - number of coefficients in a and b <= 32*/
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t        *buf,   /* buf size >= 64 bytes */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N)     /*  in - number of coefficients in a and b <= 32*/
 {
-    uint16_t i;
-    uint16_t j;
-    uint16_t n;
-    uint16_t *buf1, *buf2, *buf3;
-    memset(buf, 0, 64*sizeof(uint16_t));
-    memcpy(buf, a, N*sizeof(uint16_t));
+    uint32_t i;
+    uint32_t j;
+    uint32_t n;
+    uint32_t *buf1, *buf2, *buf3;
+    memset(buf, 0, 64*sizeof(uint32_t));
+    memcpy(buf, a, N*sizeof(uint32_t));
     buf1 = buf + 16;
     buf2 = buf + 32;
     buf3 = buf + 48;
@@ -194,8 +234,8 @@ __m256i_grade_school_mul_32_old(
     for (i=1;i<N;i++)
     {
         tmp = _mm256_set1_epi16(b[i]);
-        memcpy(buf+i, a, N*sizeof(uint16_t));       // shifting
-        memset(buf, 0, i*sizeof(uint16_t));
+        memcpy(buf+i, a, N*sizeof(uint32_t));       // shifting
+        memset(buf, 0, i*sizeof(uint32_t));
         a256[0] = _mm256_loadu_si256((__m256i *)(buf));
         a256[1] = _mm256_loadu_si256((__m256i *)(buf1));
         a256[2] = _mm256_loadu_si256((__m256i *)(buf2));
@@ -216,24 +256,24 @@ __m256i_grade_school_mul_32_old(
 
 int test_SB_32()
 {
- /*   uint16_t N;     // dimension
-    uint16_t *a;    // first polynomial
-    uint16_t *b;    // second polynomial
-    uint16_t *buf;    // buffer
-    uint16_t *r;    // result
-    uint16_t *r2;    // result
+ /*   uint32_t N;     // dimension
+    uint32_t *a;    // first polynomial
+    uint32_t *b;    // second polynomial
+    uint32_t *buf;    // buffer
+    uint32_t *r;    // result
+    uint32_t *r2;    // result
     uint64_t i,j;
-    uint16_t test_dim;
+    uint32_t test_dim;
     float ss1,ss2,ss3;
     clock_t start, end;
 
 
     N = 32;
-    a = (uint16_t*) malloc (2*N*sizeof(uint16_t));
-    b = (uint16_t*) malloc (2*N*sizeof(uint16_t));
-    buf = (uint16_t*) malloc (4*N*sizeof(uint16_t));
-    r = (uint16_t*) malloc (4*N*sizeof(uint64_t));
-    r2 = (uint16_t*) malloc (4*N*sizeof(uint64_t));
+    a = (uint32_t*) malloc (2*N*sizeof(uint32_t));
+    b = (uint32_t*) malloc (2*N*sizeof(uint32_t));
+    buf = (uint32_t*) malloc (4*N*sizeof(uint32_t));
+    r = (uint32_t*) malloc (4*N*sizeof(uint64_t));
+    r2 = (uint32_t*) malloc (4*N*sizeof(uint64_t));
 
 
     for (test_dim=8;test_dim<32;test_dim++)
@@ -244,8 +284,8 @@ int test_SB_32()
         cout<<"dimension: "<<test_dim<<" ";
         for (j=0;j<100000;j++)
         {
-            memset(a+test_dim, 0, 2*N*sizeof(uint16_t));
-            memset(b+test_dim, 0, 2*N*sizeof(uint16_t));
+            memset(a+test_dim, 0, 2*N*sizeof(uint32_t));
+            memset(b+test_dim, 0, 2*N*sizeof(uint32_t));
             for(i=0; i< test_dim;i++)
             {
                 a[i] = rand()&0x07FF;

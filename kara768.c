@@ -3,13 +3,13 @@
 
 
 void grade_school_mul_half(
-    uint16_t        *res1,  /* out - a * b in Z[x], must be length 2N */
-    uint16_t const  *a,     /*  in - polynomial */
-    uint16_t const  *b,     /*  in - polynomial */
-    uint16_t const   N)     /*  in - number of coefficients in a and b */
+    uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
+    uint32_t const  *a,     /*  in - polynomial */
+    uint32_t const  *b,     /*  in - polynomial */
+    uint32_t const   N)     /*  in - number of coefficients in a and b */
 {
-    uint16_t i;
-    uint16_t j;
+    uint32_t i;
+    uint32_t j;
 
     for(j=0; j<N; j++)
     {
@@ -28,15 +28,15 @@ void grade_school_mul_half(
 }
 
 #define maxn 400005
-uint16_t r[maxn];
-uint16_t t[maxn];
-uint16_t a[maxn];
-uint16_t b[maxn];
+uint32_t r[maxn];
+uint32_t t[maxn];
+uint32_t a[maxn];
+uint32_t b[maxn];
 int n;
 
 
-uint16_t up(uint16_t x){
-	uint16_t ans=1,i;
+uint32_t up(uint32_t x){
+	uint32_t ans=1,i;
 	for(i=1;i<=30;i++){
 		if((1<<i) > x)
 			return 1<<i;
@@ -44,11 +44,11 @@ uint16_t up(uint16_t x){
 }
 
 void karatsuba(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n) /*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n) /*  in - number of coefficients in a and b */
 
 {
     if (n < 64)
@@ -56,12 +56,12 @@ void karatsuba(
         grade_school_mul(r, a, b, n);
         return;
     }
-    uint16_t i;
-    uint16_t s = n/2;
-    uint16_t const *a1 = a+s;
-    uint16_t const *b1 = b+s;
-    uint16_t *t1 = t+s;
-    uint16_t *r1 = r+s, *r2 = r+2*s, *r3 = r+3*s;
+    uint32_t i;
+    uint32_t s = n/2;
+    uint32_t const *a1 = a+s;
+    uint32_t const *b1 = b+s;
+    uint32_t *t1 = t+s;
+    uint32_t *r1 = r+s, *r2 = r+2*s, *r3 = r+3*s;
     for(i=0; i<s; i++)
     {
         r[i] = a[i]-a1[i];
@@ -85,11 +85,11 @@ void karatsuba(
 }
 
 void karatsuba_half(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n) /*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n) /*  in - number of coefficients in a and b */
 
 {
     if (n < 64)
@@ -97,12 +97,12 @@ void karatsuba_half(
         grade_school_mul_half(r, a, b, n);
         return;
     }
-    uint16_t i;
-    uint16_t s = n/2;
-    uint16_t const *a1 = a+s;
-    uint16_t const *b1 = b+s;
-    uint16_t *t1 = t+s;
-    uint16_t *r1 = r+s, *r2 = r+2*s, *r3 = r+3*s;
+    uint32_t i;
+    uint32_t s = n/2;
+    uint32_t const *a1 = a+s;
+    uint32_t const *b1 = b+s;
+    uint32_t *t1 = t+s;
+    uint32_t *r1 = r+s, *r2 = r+2*s, *r3 = r+3*s;
 
     
     karatsuba_half(t, r2, a, b1, s);
@@ -128,56 +128,57 @@ void karatsuba_half(
 }
 
 void karatsuba_768(
-    uint16_t        *r, 
-    uint16_t        *t, 
-    uint16_t const  *a, 
-    uint16_t const  *b, 
-    uint16_t const   n) 
+    uint32_t        *r, 
+    uint32_t        *t, 
+    uint32_t const  *a, 
+    uint32_t const  *b, 
+    uint32_t const   n) 
 
 {
-	const uint16_t m=256;
-	uint16_t i;
-	uint16_t* r0=r;
-	uint16_t* r1=r+m;
-	uint16_t* r2=r+m*2;
-	uint16_t* r3=r+m*3;
+	const uint32_t m=256;
+	uint32_t i;
+	uint32_t* r0=r;
+	uint32_t* r1=r+m;
+	uint32_t* r2=r+m*2;
+	uint32_t* r3=r+m*3;
 	
-	uint16_t const * a0=a;
-	uint16_t const * a1=a+m;
-	uint16_t const * a2=a+m*2;
+	uint32_t const * a0=a;
+	uint32_t const * a1=a+m;
+	uint32_t const * a2=a+m*2;
 	
-	uint16_t const * b0=b;
-	uint16_t const * b1=b+m;
-	uint16_t const * b2=b+m*2;
+	uint32_t const * b0=b;
+	uint32_t const * b1=b+m;
+	uint32_t const * b2=b+m*2;
 	
-	uint16_t* t0=t;
-	uint16_t* t1=t+m;
-	uint16_t* t2=t+m*2;
-	uint16_t* t3=t+m*3;
-	uint16_t* t4=t+m*4;
-	uint16_t* t5=t+m*4;
+	uint32_t* t0=t;
+	uint32_t* t1=t+m;
+	uint32_t* t2=t+m*2;
+	uint32_t* t3=t+m*3;
+	uint32_t* t4=t+m*4;
+	uint32_t* t5=t+m*5;
+	uint32_t* t6=t+m*6;
+	
+	grade_school_mul_optim(t0,a2,b0,m);
+	grade_school_mul_optim(r2,a0,b2,m);
+	for(i=0;i<m;i++){
+		r2[i]+=t[i];
+	}
+	
 	
     for(i=0; i<m; i++)
     {
         r0[i] = a0[i]+a1[i];
         r1[i] = b0[i]+b1[i];
     }
-    karatsuba(t4, r3, r0, r1, m);
-    
+    grade_school_mul_optim(t4, r0, r1, m);
 	
-	karatsuba(t,r3,a2,b0,m);
-	karatsuba(r2,r3,a0,b2,m);
-	for(i=0;i<m;i++){
-		r2[i]+=t[i];
-	}
-	
-	karatsuba(t0,r3,a1,b1,m);
+	grade_school_mul_optim(t0,a1,b1,m);
 	for(i=0;i<m;i++){
 		r2[i]+=t0[i];
 		t4[i]-=t0[i];
 		t5[i]-=t1[i];
 	}
-	karatsuba(t0,r3,a0,b0,m);
+	grade_school_mul_optim(t0,a0,b0,m);
 	
 	for(i=0;i<m;i++){
 		r0[i]=t0[i];
@@ -192,93 +193,47 @@ void karatsuba_768(
 	}
 }
 
-void __m256i_karatsuba_768(
-    uint16_t        *r, 
-    uint16_t        *t, 
-    uint16_t const  *a, 
-    uint16_t const  *b, 
-    uint16_t const   n) 
-
-{
-	const uint16_t s=256;
-	uint16_t i;
-	uint16_t* r0=r;
-	uint16_t* r1=r+s;
-	uint16_t* r2=r+s*2;
-	uint16_t* r3=r+s*3;
-	
-	uint16_t const * a0=a;
-	uint16_t const * a1=a+s;
-	uint16_t const * a2=a+s*2;
-	
-	uint16_t const * b0=b;
-	uint16_t const * b1=b+s;
-	uint16_t const * b2=b+s*2;
-	
-	uint16_t* t0=t;
-	uint16_t* t1=t+s;
-	uint16_t* t2=t+s*2;
-	uint16_t* t3=t+s*3;
-	uint16_t* t4=t+s*4;
-	uint16_t* t5=t+s*4;
-	
-    for(i=0; i<s; i++)
-    {
-        r0[i] = a0[i]+a1[i];
-        r1[i] = b0[i]+b1[i];
-    }
-    __mm256i_karatsuba_SB(t4, r3, r0, r1, s);
-    
-	
-	__mm256i_karatsuba_SB(t,r3,a2,b0,s);
-	__mm256i_karatsuba_SB(r2,r3,a0,b2,s);
-	for(i=0;i<s;i++){
-		r2[i]+=t[i];
-	}
-	
-	__mm256i_karatsuba_SB(t0,r3,a1,b1,s);
-	for(i=0;i<s;i++){
-		r2[i]+=t0[i];
-		t4[i]-=t0[i];
-		t5[i]-=t1[i];
-	}
-	__mm256i_karatsuba_SB(t0,r3,a0,b0,s);
-	
-	for(i=0;i<s;i++){
-		r0[i]=t0[i];
-		r1[i]=t1[i];
-		
-		t4[i]-=t0[i];
-		t5[i]-=t1[i];
-	}
-	for(i=0;i<s;i++){
-		r1[i]+=t4[i];
-		r2[i]+=t5[i];
-	}
+int h(uint32_t *r){
+	int ans=0,i;
+	for(i=0;i<768;i++)
+		ans=ans*233+r[i];
+	return ans;
 }
 
+#define TEST(multiply) \
+	puts(#multiply);\
+	st=clock();\
+	multiply(r,t,a,b,n); \
+	printf("%.8f\n",(clock()-st)/CLOCKS_PER_SEC);\
+	printf("hash=%d\n",h(r));
 
 int main(){
 	n=768;
-	for(uint16_t i=0;i<n;i++){
-		a[i]=rand()%10;
-		b[i]=rand()%10;
+	for(uint32_t i=0;i<n;i++){
+		a[i]=rand()%100;
+		b[i]=rand()%100;
 	}
-	
-	double st=clock();
-	
-	karatsuba(r,t,a,b,n);
-	
-	printf("%.8f\n",(clock()-st)/CLOCKS_PER_SEC);
-	//printf("%d\n",(int)r[511]);
+	double st;	
 	
 	
+	TEST(karatsuba_768);
+	TEST(karatsuba_old);
+	TEST(karatsuba);
+	TEST(karatsuba_old_optim);
+	TEST(karatsuba_old_optim2);
+	
+	puts("grade_school_mul");
 	st=clock();
-	
-	__m256i_karatsuba_768(r,t,a,b,n);
-	
+	grade_school_mul(r,a,b,n); 
 	printf("%.8f\n",(clock()-st)/CLOCKS_PER_SEC);
-	//printf("%d\n",(int)r[511]);
+	printf("hash=%d\n",h(r));
+	
+	puts("grade_school_mul_optim");
+	st=clock();
+	grade_school_mul_optim(r,a,b,n); 
+	printf("%.8f\n",(clock()-st)/CLOCKS_PER_SEC);
+	printf("hash=%d\n",h(r));
+	
 
 	return 0;
 }

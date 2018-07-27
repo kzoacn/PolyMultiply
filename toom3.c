@@ -1,11 +1,11 @@
 #include "simd_poly.h"
 int
 toom3(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n) /*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n) /*  in - number of coefficients in a and b */
 {
     if (n>96)
     {
@@ -18,13 +18,13 @@ toom3(
         return 0;
     }
 
-    uint16_t    i;
-    uint16_t    s = 32;
-    uint16_t    s2 = 64;
-    uint16_t  const  *a1 = a+s, *a2 = a+s2;
-    uint16_t  const  *b1 = b+s, *b2 = b+s2;
-    uint16_t    *r1 = r+s, *r2 = r+s2, *r3 = r+s*3, *r4 = r+s*4, *r5 = r+s*5;
-    uint16_t    *t2 = t+s2, *t4 = t+s2*2, *t6 = t+s2*3, *t8 = t+s2*4;
+    uint32_t    i;
+    uint32_t    s = 32;
+    uint32_t    s2 = 64;
+    uint32_t  const  *a1 = a+s, *a2 = a+s2;
+    uint32_t  const  *b1 = b+s, *b2 = b+s2;
+    uint32_t    *r1 = r+s, *r2 = r+s2, *r3 = r+s*3, *r4 = r+s*4, *r5 = r+s*5;
+    uint32_t    *t2 = t+s2, *t4 = t+s2*2, *t6 = t+s2*3, *t8 = t+s2*4;
 
     /*
      * t  = w0   = a(0) * b(0)
@@ -154,9 +154,9 @@ toom3(
      * putting them back
      */
 
-    memcpy(r2, r,  sizeof(uint16_t)*s2);
-    memcpy(r,  t,  sizeof(uint16_t)*s2);
-    memcpy(r4, t8, sizeof(uint16_t)*s2);
+    memcpy(r2, r,  sizeof(uint32_t)*s2);
+    memcpy(r,  t,  sizeof(uint32_t)*s2);
+    memcpy(r4, t8, sizeof(uint32_t)*s2);
 
 
     for (i=0;i<s2;i++)
@@ -172,11 +172,11 @@ toom3(
 
 int
 toom3__mm256i_SB(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n) /*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n) /*  in - number of coefficients in a and b */
 {
     if (n>96)
     {
@@ -189,13 +189,13 @@ toom3__mm256i_SB(
         return 0;
     }
 
-    uint16_t    i;
-    uint16_t    s = 32, s2 = 64;
-    uint16_t  const  *a1 = a+s, *a2 = a+s2;
-    uint16_t  const  *b1 = b+s, *b2 = b+s2;
-    uint16_t    *r1 = r+s,  *r2 = r+s2,   *r3 = r+s*3,  *r4 = r+s*4, *r5 = r+s*5;
-    uint16_t    *t2 = t+s2, *t4 = t+s2*2, *t6 = t+s2*3, *t8 = t+s2*4;
-    uint16_t    *buf = t+s2*10;
+    uint32_t    i;
+    uint32_t    s = 32, s2 = 64;
+    uint32_t  const  *a1 = a+s, *a2 = a+s2;
+    uint32_t  const  *b1 = b+s, *b2 = b+s2;
+    uint32_t    *r1 = r+s,  *r2 = r+s2,   *r3 = r+s*3,  *r4 = r+s*4, *r5 = r+s*5;
+    uint32_t    *t2 = t+s2, *t4 = t+s2*2, *t6 = t+s2*3, *t8 = t+s2*4;
+    uint32_t    *buf = t+s2*10;
 
 
     /*
@@ -332,9 +332,9 @@ toom3__mm256i_SB(
      * putting them back
      */
 
-    memcpy(r2, r,  sizeof(uint16_t)*s2);
-    memcpy(r,  t,  sizeof(uint16_t)*s2);
-    memcpy(r4, t8, sizeof(uint16_t)*s2);
+    memcpy(r2, r,  sizeof(uint32_t)*s2);
+    memcpy(r,  t,  sizeof(uint32_t)*s2);
+    memcpy(r4, t8, sizeof(uint32_t)*s2);
 
     for (i=0;i<s2;i++)
     {
@@ -350,11 +350,11 @@ toom3__mm256i_SB(
 
 int
 __mm256i_toom3__mm256i_SB(
-    uint16_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint16_t        *t, /*  in - n coefficients of scratch space */
-    uint16_t const  *a, /*  in - polynomial */
-    uint16_t const  *b, /*  in - polynomial */
-    uint16_t const   n) /*  in - number of coefficients in a and b */
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n) /*  in - number of coefficients in a and b */
 {
     if (n>96)
     {
@@ -367,13 +367,13 @@ __mm256i_toom3__mm256i_SB(
         return 0;
     }
 
-    uint16_t    i;
-    uint16_t    s = 32, s2 = 64;
-    uint16_t  const  *a1 = a+s, *a2 = a+s2;
-    uint16_t  const  *b1 = b+s, *b2 = b+s2;
-    uint16_t    *r1 = r+s,  *r2 = r+s2,   *r3 = r+s*3,  *r4 = r+s*4, *r5 = r+s*5;
-    uint16_t    *t2 = t+s2, *t4 = t+s2*2, *t6 = t+s2*3, *t8 = t+s2*4;
-    uint16_t    *buf = t+s2*10;
+    uint32_t    i;
+    uint32_t    s = 32, s2 = 64;
+    uint32_t  const  *a1 = a+s, *a2 = a+s2;
+    uint32_t  const  *b1 = b+s, *b2 = b+s2;
+    uint32_t    *r1 = r+s,  *r2 = r+s2,   *r3 = r+s*3,  *r4 = r+s*4, *r5 = r+s*5;
+    uint32_t    *t2 = t+s2, *t4 = t+s2*2, *t6 = t+s2*3, *t8 = t+s2*4;
+    uint32_t    *buf = t+s2*10;
     __m256i     mr0a, mr0b, mr1a, mr1b, mr2a, mr2b,
                 mr3a, mr3b, mr4a, mr4b, mr5a, mr5b;
     __m256i     mt0a, mt0b, mt0c, mt0d,
@@ -683,23 +683,23 @@ __mm256i_toom3__mm256i_SB(
 
 int test_toom3()
 {
-   /* uint16_t N;     // dimension
-    uint16_t *a;    // first polynomial
-    uint16_t *b;    // second polynomial
-    uint16_t *buf;    // buffer
-    uint16_t *r;    // result
-    uint16_t *r2;    // result
-    uint16_t i,j;
-    uint16_t test_dim;
+   /* uint32_t N;     // dimension
+    uint32_t *a;    // first polynomial
+    uint32_t *b;    // second polynomial
+    uint32_t *buf;    // buffer
+    uint32_t *r;    // result
+    uint32_t *r2;    // result
+    uint32_t i,j;
+    uint32_t test_dim;
     float ss0, ss1,ss2, ss3;
     clock_t start, end;
 
     N = 96;
-    a = (uint16_t*) malloc (2*N*sizeof(uint16_t));
-    b = (uint16_t*) malloc (2*N*sizeof(uint16_t));
-    buf = (uint16_t*) malloc (4*N*sizeof(uint16_t));
-    r = (uint16_t*) malloc (4*N*sizeof(uint64_t));
-    r2 = (uint16_t*) malloc (4*N*sizeof(uint64_t));
+    a = (uint32_t*) malloc (2*N*sizeof(uint32_t));
+    b = (uint32_t*) malloc (2*N*sizeof(uint32_t));
+    buf = (uint32_t*) malloc (4*N*sizeof(uint32_t));
+    r = (uint32_t*) malloc (4*N*sizeof(uint64_t));
+    r2 = (uint32_t*) malloc (4*N*sizeof(uint64_t));
 
     cout<<"testing toom 3"<<endl;
     for (test_dim=65;test_dim<96;test_dim++)
@@ -711,8 +711,8 @@ int test_toom3()
         cout<<"dimension: "<<test_dim<<" ";
         for (j=0;j<1000;j++)
         {
-            memset(a+test_dim, 0, 2*N*sizeof(uint16_t));
-            memset(b+test_dim, 0, 2*N*sizeof(uint16_t));
+            memset(a+test_dim, 0, 2*N*sizeof(uint32_t));
+            memset(b+test_dim, 0, 2*N*sizeof(uint32_t));
             for(i=0; i< test_dim;i++)
             {
                 a[i] = rand()&0x07FF;
