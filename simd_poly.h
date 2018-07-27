@@ -92,6 +92,13 @@ __mm256i_karatsuba_SB(
     uint32_t const  *a, /*  in - polynomial */
     uint32_t const  *b, /*  in - polynomial */
     uint32_t const   n);/*  in - number of coefficients in a and b */
+void
+__mm256i_karatsuba_gs(
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n);/*  in - number of coefficients in a and b */
 
 
 

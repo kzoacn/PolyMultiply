@@ -1,5 +1,47 @@
 #include "simd_poly.h"
 
+void
+__mm256i_karatsuba_gs(
+    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint32_t        *t, /*  in - n coefficients of scratch space */
+    uint32_t const  *a, /*  in - polynomial */
+    uint32_t const  *b, /*  in - polynomial */
+    uint32_t const   n) /*  in - number of coefficients in a and b */
+
+{
+    if (n < 32)
+    {
+        __m256i_grade_school_mul_32(r, t,a, b, n);
+        return;
+    }
+    uint32_t i;
+    uint32_t s = n/2;
+    uint32_t const *a1 = a+s;
+    uint32_t const *b1 = b+s;
+    uint32_t *t1 = t+s;
+    uint32_t *r1 = r+s, *r2 = r+2*s, *r3 = r+3*s;
+    for(i=0; i<s; i++)
+    {
+        r[i] = a[i]-a1[i];
+        r1[i] = b1[i]-b[i];
+    }
+    karatsuba_old(t, r2, r, r1, s);
+    karatsuba_old(r2, r, a1, b1, s);
+    for(i=0; i<s; i++)
+    {
+        r1[i] = r2[i] + t[i];
+        r2[i] += r3[i] + t1[i];
+    }
+    karatsuba_old(t, r, a, b, s);
+    for(i=0; i<s; i++)
+    {
+        r[i] = t[i];
+        r1[i] += t[i] + t1[i];
+        r2[i] += t1[i];
+    }
+    return;
+}
+
 
 void
 __mm256i_karatsuba_SB(
@@ -276,7 +318,7 @@ karatsuba_old_optim(
 {
     if (n < 32)
     {
-        grade_school_mul(r, a, b, n);
+        grade_school_mul_optim(r, a, b, n);
         return;
     }
     uint32_t i;
