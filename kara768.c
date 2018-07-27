@@ -1,6 +1,5 @@
 #include"simd_poly.h"
 
-#define Q 118273
 
 void grade_school_mul_half(
     uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */

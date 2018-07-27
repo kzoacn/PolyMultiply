@@ -1,6 +1,6 @@
 
 #include "simd_poly.h"
-#define Q
+#define Q 118273
 void grade_school_mul_half_optim(
     uint32_t        *res1,  /* out - a * b in Z[x], must be length 2N */
     uint32_t const  *a,     /*  in - polynomial */
@@ -73,7 +73,7 @@ void grade_school_mul_optim(
         j=N;
         for(;j--;)
         {
-            *rr += (*ai)*(*bb)%111111;
+            *rr += (*ai)*(*bb);
             bb++;
             rr++;
         }
