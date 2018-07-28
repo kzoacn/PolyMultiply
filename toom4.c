@@ -9,11 +9,11 @@
 
 int
 toom4_SB(
-    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint32_t        *t, /*  in - n coefficients of scratch space */
-    uint32_t const  *a, /*  in - polynomial */
-    uint32_t const  *b, /*  in - polynomial */
-    uint32_t const   n) /*  in - number of coefficients in a and b */
+    uint64_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint64_t        *t, /*  in - n coefficients of scratch space */
+    uint64_t const  *a, /*  in - polynomial */
+    uint64_t const  *b, /*  in - polynomial */
+    uint64_t const   n) /*  in - number of coefficients in a and b */
 {
     if (n < 96)
     {
@@ -25,14 +25,14 @@ toom4_SB(
         printf("degree exceeds the maximum (384) allowed\n");
         return -1;
     }
-    uint32_t s = 96, s2 = 192;
-    uint32_t i;
-    uint32_t x; // swap space
-    uint32_t const *a1 = a+s, *a2 = a+2*s, *a3 = a+3*s;
-    uint32_t const *b1 = b+s, *b2 = b+2*s, *b3 = b+3*s;
-    uint32_t *r1 = r+s, *r2 = r+2*s, *r4 = r+4*s, *r6 = r+6*s, *r7 = r+7*s;
-    uint32_t *t3 = t+2*s, *t5 = t+4*s;
-    uint32_t *e = t+6*s; // for karatsuba only
+    uint64_t s = 96, s2 = 192;
+    uint64_t i;
+    uint64_t x; // swap space
+    uint64_t const *a1 = a+s, *a2 = a+2*s, *a3 = a+3*s;
+    uint64_t const *b1 = b+s, *b2 = b+2*s, *b3 = b+3*s;
+    uint64_t *r1 = r+s, *r2 = r+2*s, *r4 = r+4*s, *r6 = r+6*s, *r7 = r+7*s;
+    uint64_t *t3 = t+2*s, *t5 = t+4*s;
+    uint64_t *e = t+6*s; // for karatsuba only
     // +-1 ---- t: -, r2: +
     for(i=0; i<s; i++)
     {
@@ -105,11 +105,11 @@ toom4_SB(
 
 int
 toom4_toom3(
-    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint32_t        *t, /*  in - n coefficients of scratch space */
-    uint32_t const  *a, /*  in - polynomial */
-    uint32_t const  *b, /*  in - polynomial */
-    uint32_t const   n) /*  in - number of coefficients in a and b */
+    uint64_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint64_t        *t, /*  in - n coefficients of scratch space */
+    uint64_t const  *a, /*  in - polynomial */
+    uint64_t const  *b, /*  in - polynomial */
+    uint64_t const   n) /*  in - number of coefficients in a and b */
 {
     if (n < 96)
     {
@@ -121,14 +121,14 @@ toom4_toom3(
         printf("degree exceeds the maximum (384) allowed\n");
         return -1;
     }
-    uint32_t s = 96, s2 = 192;
-    uint32_t i;
-    uint32_t x; // swap space
-    uint32_t const *a1 = a+s, *a2 = a+2*s, *a3 = a+3*s;
-    uint32_t const *b1 = b+s, *b2 = b+2*s, *b3 = b+3*s;
-    uint32_t *r1 = r+s, *r2 = r+2*s, *r4 = r+4*s, *r6 = r+6*s, *r7 = r+7*s;
-    uint32_t *t3 = t+2*s, *t5 = t+4*s;
-    uint32_t *e = t+6*s; // for karatsuba only
+    uint64_t s = 96, s2 = 192;
+    uint64_t i;
+    uint64_t x; // swap space
+    uint64_t const *a1 = a+s, *a2 = a+2*s, *a3 = a+3*s;
+    uint64_t const *b1 = b+s, *b2 = b+2*s, *b3 = b+3*s;
+    uint64_t *r1 = r+s, *r2 = r+2*s, *r4 = r+4*s, *r6 = r+6*s, *r7 = r+7*s;
+    uint64_t *t3 = t+2*s, *t5 = t+4*s;
+    uint64_t *e = t+6*s; // for karatsuba only
     // +-1 ---- t: -, r2: +
     for(i=0; i<s; i++)
     {
@@ -201,11 +201,11 @@ toom4_toom3(
 
 int
 toom4__mm256i_toom3(
-    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint32_t        *t, /*  in - n coefficients of scratch space */
-    uint32_t const  *a, /*  in - polynomial */
-    uint32_t const  *b, /*  in - polynomial */
-    uint32_t const   n) /*  in - number of coefficients in a and b */
+    uint64_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint64_t        *t, /*  in - n coefficients of scratch space */
+    uint64_t const  *a, /*  in - polynomial */
+    uint64_t const  *b, /*  in - polynomial */
+    uint64_t const   n) /*  in - number of coefficients in a and b */
 {
     if (n < 96)
     {
@@ -217,14 +217,14 @@ toom4__mm256i_toom3(
         printf("degree exceeds the maximum (384) allowed\n");
         return -1;
     }
-    uint32_t s = 96, s2 = 192;
-    uint32_t i;
-    uint32_t x; // swap space
-    uint32_t const *a1 = a+s, *a2 = a+2*s, *a3 = a+3*s;
-    uint32_t const *b1 = b+s, *b2 = b+2*s, *b3 = b+3*s;
-    uint32_t *r1 = r+s, *r2 = r+2*s, *r4 = r+4*s, *r6 = r+6*s, *r7 = r+7*s;
-    uint32_t *t3 = t+2*s, *t5 = t+4*s;
-    uint32_t *e = t+6*s; // for karatsuba only
+    uint64_t s = 96, s2 = 192;
+    uint64_t i;
+    uint64_t x; // swap space
+    uint64_t const *a1 = a+s, *a2 = a+2*s, *a3 = a+3*s;
+    uint64_t const *b1 = b+s, *b2 = b+2*s, *b3 = b+3*s;
+    uint64_t *r1 = r+s, *r2 = r+2*s, *r4 = r+4*s, *r6 = r+6*s, *r7 = r+7*s;
+    uint64_t *t3 = t+2*s, *t5 = t+4*s;
+    uint64_t *e = t+6*s; // for karatsuba only
     // +-1 ---- t: -, r2: +
     for(i=0; i<s; i++)
     {
@@ -296,23 +296,23 @@ toom4__mm256i_toom3(
 
 int test_toom4()
 {
-     /*uint32_t N;     // dimension
-     uint32_t *a;    // first polynomial
-     uint32_t *b;    // second polynomial
-     uint32_t *buf;    // buffer
-     uint32_t *r;    // result
-     uint32_t *r2;    // result
-     uint32_t i,j;
-     uint32_t test_dim;
+     /*uint64_t N;     // dimension
+     uint64_t *a;    // first polynomial
+     uint64_t *b;    // second polynomial
+     uint64_t *buf;    // buffer
+     uint64_t *r;    // result
+     uint64_t *r2;    // result
+     uint64_t i,j;
+     uint64_t test_dim;
      float ss0, ss1,ss2, ss3;
      clock_t start, end;
 
      N = 384;
-     a = (uint32_t*) malloc (2*N*sizeof(uint32_t));
-     b = (uint32_t*) malloc (2*N*sizeof(uint32_t));
-     buf = (uint32_t*) malloc (4*N*sizeof(uint32_t));
-     r = (uint32_t*) malloc (4*N*sizeof(uint64_t));
-     r2 = (uint32_t*) malloc (4*N*sizeof(uint64_t));
+     a = (uint64_t*) malloc (2*N*sizeof(uint64_t));
+     b = (uint64_t*) malloc (2*N*sizeof(uint64_t));
+     buf = (uint64_t*) malloc (4*N*sizeof(uint64_t));
+     r = (uint64_t*) malloc (4*N*sizeof(uint64_t));
+     r2 = (uint64_t*) malloc (4*N*sizeof(uint64_t));
 
      cout<<"testing toom 4"<<endl;
      for (test_dim=289;test_dim<384;test_dim++)
@@ -324,8 +324,8 @@ int test_toom4()
          cout<<"dimension: "<<test_dim<<" ";
          for (j=0;j<1000;j++)
          {
-             memset(a+test_dim, 0, 2*N*sizeof(uint32_t));
-             memset(b+test_dim, 0, 2*N*sizeof(uint32_t));
+             memset(a+test_dim, 0, 2*N*sizeof(uint64_t));
+             memset(b+test_dim, 0, 2*N*sizeof(uint64_t));
              for(i=0; i< test_dim;i++)
              {
                  a[i] = rand()&0x07FF;
@@ -375,11 +375,11 @@ int test_toom4()
 
 int
 __mm256i_toom4__mm256i_toom3(
-    uint32_t        *r, /* out - a * b in Z[x], must be length 2n */
-    uint32_t        *t, /*  in - n coefficients of scratch space */
-    uint32_t const  *a, /*  in - polynomial */
-    uint32_t const  *b, /*  in - polynomial */
-    uint32_t const   n) /*  in - number of coefficients in a and b */
+    uint64_t        *r, /* out - a * b in Z[x], must be length 2n */
+    uint64_t        *t, /*  in - n coefficients of scratch space */
+    uint64_t const  *a, /*  in - polynomial */
+    uint64_t const  *b, /*  in - polynomial */
+    uint64_t const   n) /*  in - number of coefficients in a and b */
 {
     if (n < 96)
     {
@@ -391,13 +391,13 @@ __mm256i_toom4__mm256i_toom3(
         printf("degree exceeds the maximum (384) allowed\n");
         return -1;
     }
-    uint32_t s = 96, s2 = 192;
-    uint32_t i;
-    uint32_t const *a1 = a+s, *a2 = a+2*s, *a3 = a+3*s;
-    uint32_t const *b1 = b+s, *b2 = b+2*s, *b3 = b+3*s;
-    uint32_t *r1 = r+s, *r2 = r+2*s, *r4 = r+4*s, *r6 = r+6*s, *r7 = r+7*s;
-    uint32_t *t3 = t+2*s, *t5 = t+4*s;
-    uint32_t *e = t+6*s; // for karatsuba only
+    uint64_t s = 96, s2 = 192;
+    uint64_t i;
+    uint64_t const *a1 = a+s, *a2 = a+2*s, *a3 = a+3*s;
+    uint64_t const *b1 = b+s, *b2 = b+2*s, *b3 = b+3*s;
+    uint64_t *r1 = r+s, *r2 = r+2*s, *r4 = r+4*s, *r6 = r+6*s, *r7 = r+7*s;
+    uint64_t *t3 = t+2*s, *t5 = t+4*s;
+    uint64_t *e = t+6*s; // for karatsuba only
 
     __m256i  mr0[12],
              mr2[12],

@@ -2,35 +2,35 @@
 
 
 void _mm256i_karatsuba_768(
-    uint32_t        *r, 
-    uint32_t        *t, 
-    uint32_t const  *a, 
-    uint32_t const  *b, 
-    uint32_t const   n) 
+    uint64_t        *r, 
+    uint64_t        *t, 
+    uint64_t const  *a, 
+    uint64_t const  *b, 
+    uint64_t const   n) 
 
 {
-	const uint32_t m=256;
-	uint32_t i;
-	uint32_t* r0=r;
-	uint32_t* r1=r+m;
-	uint32_t* r2=r+m*2;
-	uint32_t* r3=r+m*3;
+	const uint64_t m=256;
+	uint64_t i;
+	uint64_t* r0=r;
+	uint64_t* r1=r+m;
+	uint64_t* r2=r+m*2;
+	uint64_t* r3=r+m*3;
 	
-	uint32_t const * a0=a;
-	uint32_t const * a1=a+m;
-	uint32_t const * a2=a+m*2;
+	uint64_t const * a0=a;
+	uint64_t const * a1=a+m;
+	uint64_t const * a2=a+m*2;
 	
-	uint32_t const * b0=b;
-	uint32_t const * b1=b+m;
-	uint32_t const * b2=b+m*2;
+	uint64_t const * b0=b;
+	uint64_t const * b1=b+m;
+	uint64_t const * b2=b+m*2;
 	
-	uint32_t* t0=t;
-	uint32_t* t1=t+m;
-	uint32_t* t2=t+m*2;
-	uint32_t* t3=t+m*3;
-	uint32_t* t4=t+m*4;
-	uint32_t* t5=t+m*5;
-	uint32_t* t6=t+m*6;
+	uint64_t* t0=t;
+	uint64_t* t1=t+m;
+	uint64_t* t2=t+m*2;
+	uint64_t* t3=t+m*3;
+	uint64_t* t4=t+m*4;
+	uint64_t* t5=t+m*5;
+	uint64_t* t6=t+m*6;
 	
 	__mm256i_karatsuba_SB(t0,r3,a2,b0,m);
 	__mm256i_karatsuba_SB(r2,r3,a0,b2,m);

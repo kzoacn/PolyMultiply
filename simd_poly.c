@@ -7,7 +7,7 @@ uint64_t rdtsc(){
 
 void print256_num(__m256i var)
 {
-    uint32_t *val = (uint32_t*) &var;
+    uint64_t *val = (uint64_t*) &var;
     printf("%i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i\n",
            val[0], val[1], val[2], val[3],
            val[4], val[5], val[6], val[7],
@@ -16,16 +16,16 @@ void print256_num(__m256i var)
 }
 void print256_num_mod_q(__m256i var)
 {
-    uint32_t *val = (uint32_t*) &var;
+    uint64_t *val = (uint64_t*) &var;
     printf("%i %i %i %i %i %i %i %i %i %i %i %i %i %i %i %i\n",
             val[0]%(2048), val[1]%(2048), val[2]%(2048), val[3]%(2048),
             val[4]%(2048), val[5]%(2048), val[6]%(2048), val[7]%(2048),
             val[8]%(2048), val[9]%(2048), val[10]%(2048), val[11]%(2048),
             val[12]%(2048), val[13]%(2048), val[14]%(2048), val[15]%(2048));
 }
-void print32poly(uint32_t* poly)
+void print32poly(uint64_t* poly)
 {
-    uint32_t i;
+    uint64_t i;
     for (i=0;i<8;i++)
         printf("%d, ", poly[i]%2048);
     printf("\n");
@@ -42,29 +42,29 @@ void print32poly(uint32_t* poly)
 
 void test_ntru()
 {
-  /*  uint32_t N;     // dimension
-    uint32_t *a;    // first polynomial
-    uint32_t *b;    // second polynomial
-    uint32_t *buf;    // buffer
-    uint32_t *r;    // result
-    uint32_t i,j;
+  /*  uint64_t N;     // dimension
+    uint64_t *a;    // first polynomial
+    uint64_t *b;    // second polynomial
+    uint64_t *buf;    // buffer
+    uint64_t *r;    // result
+    uint64_t i,j;
     float ss0, ss1,ss2, ss3;
     clock_t start, end;
     uint64_t startc, endc;
     N = 768;
-    a = (uint32_t*) malloc (2*N*sizeof(uint32_t));
-    b = (uint32_t*) malloc (2*N*sizeof(uint32_t));
-    buf = (uint32_t*) malloc (4*N*sizeof(uint32_t));
-    r = (uint32_t*) malloc (4*N*sizeof(uint64_t));
+    a = (uint64_t*) malloc (2*N*sizeof(uint64_t));
+    b = (uint64_t*) malloc (2*N*sizeof(uint64_t));
+    buf = (uint64_t*) malloc (4*N*sizeof(uint64_t));
+    r = (uint64_t*) malloc (4*N*sizeof(uint64_t));
 
     ss2 = 0;
     ss3 = 0;
     for (j=0;j<1000;j++)
     {
-        memset(a, 0, 2*N*sizeof(uint32_t));
-        memset(b, 0, 2*N*sizeof(uint32_t));
-        memset(buf, 0, 4*N*sizeof(uint32_t));
-        memset(r, 0,4*N*sizeof(uint32_t));
+        memset(a, 0, 2*N*sizeof(uint64_t));
+        memset(b, 0, 2*N*sizeof(uint64_t));
+        memset(buf, 0, 4*N*sizeof(uint64_t));
+        memset(r, 0,4*N*sizeof(uint64_t));
         for(i=0; i< N;i++)
         {
             a[i] = rand()&0x07FF;
