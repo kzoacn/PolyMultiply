@@ -1,7 +1,7 @@
 
 #include "simd_poly.h"
 
-void grade_school_mul_half_optim(
+inline void grade_school_mul_half_optim(
     uint64_t        *res1,  /* out - a * b in Z[x], must be length 2N */
     uint64_t const  *a,     /*  in - polynomial */
     uint64_t const  *b,     /*  in - polynomial */
@@ -41,7 +41,7 @@ void grade_school_mul_half_optim(
     return;
 }
 
-void grade_school_mul_optim(
+inline void grade_school_mul_optim(
     uint64_t        *res1,  /* out - a * b in Z[x], must be length 2N */
     uint64_t const  *a,     /*  in - polynomial */
     uint64_t const  *b,     /*  in - polynomial */
@@ -53,7 +53,6 @@ void grade_school_mul_optim(
 	uint64_t const *ai=a;
     uint64_t const *bb=b;
     uint64_t *rr=res1;
-    
     
     
     j=N;

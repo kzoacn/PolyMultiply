@@ -59,6 +59,18 @@ grade_school_mul_256(
     uint64_t        *r,  /* out - a * b in Z[x], must be length 2N */
     uint64_t const  *a,     /*  in - polynomial */
     uint64_t const  *b);
+
+void
+grade_school_mul_128(
+    uint64_t        *r,  /* out - a * b in Z[x], must be length 2N */
+    uint64_t const  *a,     /*  in - polynomial */
+    uint64_t const  *b);
+
+void
+grade_school_mul_64(
+    uint64_t        *r,  /* out - a * b in Z[x], must be length 2N */
+    uint64_t const  *a,     /*  in - polynomial */
+    uint64_t const  *b);
 void
 grade_school_mul_optim(
     uint64_t        *res1,  /* out - a * b in Z[x], must be length 2N */

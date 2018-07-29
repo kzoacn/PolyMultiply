@@ -26,7 +26,7 @@ void grade_school_mul_half(
     return;
 }
 
-void grade_school_mul_32(
+inline void grade_school_mul_32(
     uint64_t        *r,  /* out - a * b in Z[x], must be length 2N */
     uint64_t const  *a,     /*  in - polynomial */
     uint64_t const  *b)     /*  in - polynomial */
